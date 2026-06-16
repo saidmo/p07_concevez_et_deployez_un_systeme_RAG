@@ -8,7 +8,7 @@
       "collecte": "2026-05-30 (1 an d'historique + 1 an à venir, Île-de-France)",
       "source": "OpenAgenda via API OpenDataSoft/Huwise"
     },
-    "methode_annotation": "Annotation manuelle ancrée dans le corpus : chaque question a été construite après inspection du jeu de données nettoyé, et chaque réponse de référence a été rédigée puis vérifiée champ par champ contre la ou les fiches événement sources (identifiées par uid). Les cas négatifs (hors corpus, hors période, critères impossibles) ont été vérifiés par requête exhaustive sur le corpus : aucun événement ne les satisfait.",
+    "methode_annotation": "Annotation manuelle ancrée dans le corpus : chaque question a été construite après inspection du jeu de données nettoyé, et chaque réponse de référence a été rédigée puis vérifiée champ par champ contre la ou les fiches événement sources (identifiées par uid). Les cas négatifs (hors corpus, hors période, critères impossibles) ont été vérifiés par requête exhaustive sur le corpus : aucun événement ne les satisfait. Les uids_attendus ont été élargis après une première exécution de l'évaluation : pour les questions admettant plusieurs événements également valides (même thème + mêmes contraintes de date/lieu, ou événement décliné en plusieurs fiches de lieux), la référence accepte désormais TOUT événement satisfaisant la question, et non un seul uid arbitrairement choisi. L'élargissement reste strictement fidèle à la question : par exemple, Critibulles (Q05) n'inclut que les fiches situées en Seine-Saint-Denis, et les concerts de jazz (Q01) excluent les événements musicaux non jazz. Cette révision mesure la capacité du système à trouver UN bon événement, et non L'UNIQUE événement anticipé par l'annotateur.",
     "schema": {
       "id": "Identifiant unique du cas (Q01..Q21)",
       "categorie": "Axe testé : recherche_thematique | contrainte_tarif | contrainte_date | contrainte_public | evenement_nomme | modalite_en_ligne | question_large | hors_corpus_geo | hors_corpus_periode | hors_domaine | criteres_impossibles",
@@ -28,8 +28,18 @@
       "question": "Quels concerts de jazz à Paris début juillet 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Le Dave Bristow Quintet présente « Sides » au JASS CLUB à Paris le mercredi 1er juillet 2026, avec deux sets à 19h30 et 21h30. Tarif : de 10€ à 19€.",
-      "uids_attendus": ["32194038"],
-      "mots_cles_attendus": ["Dave Bristow"],
+      "uids_attendus": [
+        "32194038",
+        "77807355",
+        "77183981",
+        "51131323",
+        "77281232",
+        "75672077",
+        "52173905"
+      ],
+      "mots_cles_attendus": [
+        "Dave Bristow"
+      ],
       "commentaire": "Recherche thématique (jazz) + lieu + fenêtre temporelle. Vérifie que le retrieval remonte le bon club de jazz."
     },
     {
@@ -38,8 +48,12 @@
       "question": "Y a-t-il un concert gratuit à Paris le dimanche 21 juin 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Oui : un concert de harpe de l'École Cortot a lieu à la Cité de l'Économie à Paris le dimanche 21 juin 2026 à 16h30. C'est gratuit.",
-      "uids_attendus": ["63959528"],
-      "mots_cles_attendus": ["harpe"],
+      "uids_attendus": [
+        "63959528"
+      ],
+      "mots_cles_attendus": [
+        "harpe"
+      ],
       "commentaire": "Contrainte tarif (gratuit) + date précise au jour près."
     },
     {
@@ -48,8 +62,12 @@
       "question": "Où puis-je fêter la Fête de la musique gratuitement dans les Yvelines en 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "La ville de La Celle-Saint-Cloud (Yvelines) organise une Fête de la musique gratuite les 20 et 21 juin 2026.",
-      "uids_attendus": ["33040290"],
-      "mots_cles_attendus": ["Celle-Saint-Cloud"],
+      "uids_attendus": [
+        "33040290"
+      ],
+      "mots_cles_attendus": [
+        "Celle-Saint-Cloud"
+      ],
       "commentaire": "Filtre département + gratuité. Piège : le concert d'ouverture de la Fête de la Musique à Versailles (même département) est payant (18€) et ne doit pas être présenté comme gratuit."
     },
     {
@@ -58,8 +76,13 @@
       "question": "Y a-t-il un spectacle de marionnettes gratuit pour les enfants à Versailles en janvier 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Oui : « Sept Lieux : Guignol », spectacle pour enfants gratuit à Versailles, les dimanches 11 et 25 janvier 2026 à 11h00.",
-      "uids_attendus": ["49816503", "27649694"],
-      "mots_cles_attendus": ["Guignol"],
+      "uids_attendus": [
+        "49816503",
+        "27649694"
+      ],
+      "mots_cles_attendus": [
+        "Guignol"
+      ],
       "commentaire": "Test sémantique : la question dit « marionnettes », les fiches disent « Guignol » — la similarité d'embeddings doit faire le pont sans correspondance lexicale exacte."
     },
     {
@@ -68,8 +91,31 @@
       "question": "Quelle exposition sur l'esprit critique est proposée en Seine-Saint-Denis en mars 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "« Critibulles, l'exposition esprit critique » se tient du 19 au 22 mars 2026 dans plusieurs médiathèques de Saint-Denis et de L'Île-Saint-Denis, dont la médiathèque Flora Tristan.",
-      "uids_attendus": ["34054226", "82601557", "35210861", "46516273"],
-      "mots_cles_attendus": ["Critibulles"],
+      "uids_attendus": [
+        "34054226",
+        "82601557",
+        "35210861",
+        "46516273",
+        "20561243",
+        "32432092",
+        "82996135",
+        "42283034",
+        "68386292",
+        "26049840",
+        "93373081",
+        "88465533",
+        "48626244",
+        "77215497",
+        "4075355",
+        "80551758",
+        "17184147",
+        "69552001",
+        "95400759",
+        "97614447"
+      ],
+      "mots_cles_attendus": [
+        "Critibulles"
+      ],
       "commentaire": "Événement décliné en plusieurs fiches (plusieurs lieux) : teste la déduplication par uid et la capacité à synthétiser plusieurs occurrences."
     },
     {
@@ -78,8 +124,12 @@
       "question": "Y a-t-il eu une visite nocturne gratuite des Grands Appartements du château de Fontainebleau en mai 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Oui : une visite libre et gratuite des Grands Appartements en nocturne a eu lieu au château de Fontainebleau le samedi 23 mai 2026 à 20h00.",
-      "uids_attendus": ["29698481"],
-      "mots_cles_attendus": ["Grands Appartements"],
+      "uids_attendus": [
+        "29698481"
+      ],
+      "mots_cles_attendus": [
+        "Grands Appartements"
+      ],
       "commentaire": "Question au passé sur un événement antérieur à la date du jour : le système doit répondre sur l'historique sans confondre passé et à venir."
     },
     {
@@ -88,8 +138,18 @@
       "question": "Quand est joué Monte-Cristo au Théâtre Berthelot de Montreuil ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "« Monte-Cristo » (Cie La Volige / Nicolas Bonneau, Fanny Chériaux) est joué au Théâtre Berthelot à Montreuil le mercredi 18 février 2026 à 20h30 et le jeudi 19 février 2026 à 14h30.",
-      "uids_attendus": ["78351657", "84202139"],
-      "mots_cles_attendus": ["Monte-Cristo", "février"],
+      "uids_attendus": [
+        "78351657",
+        "84202139",
+        "14695942",
+        "27567099",
+        "10502282",
+        "66572920"
+      ],
+      "mots_cles_attendus": [
+        "Monte-Cristo",
+        "février"
+      ],
       "commentaire": "Événement nommé avec deux représentations (deux fiches distinctes) : la réponse idéale agrège les deux dates."
     },
     {
@@ -98,8 +158,12 @@
       "question": "Y a-t-il une brocante à Aubervilliers début juin 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Oui : « Brocante au jardin ! » à la Cour Jardinée d'Aubervilliers, le samedi 6 juin 2026 de 11h30 à 17h00, à l'occasion de Rendez-vous au jardin.",
-      "uids_attendus": ["17583117"],
-      "mots_cles_attendus": ["Cour Jardinée"],
+      "uids_attendus": [
+        "17583117"
+      ],
+      "mots_cles_attendus": [
+        "Cour Jardinée"
+      ],
       "commentaire": "Recherche locale simple, ville moyenne du corpus."
     },
     {
@@ -108,8 +172,13 @@
       "question": "Quel est le tarif de la release party du Denis Uhalde Quartet « AURORE » ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "La release party du Denis Uhalde Quartet « AURORE » au JASS CLUB à Paris (jeudi 4 juin 2026, sets à 19h30 et 21h30) est au tarif de 10€ à 19€.",
-      "uids_attendus": ["32465869"],
-      "mots_cles_attendus": ["10", "19"],
+      "uids_attendus": [
+        "32465869"
+      ],
+      "mots_cles_attendus": [
+        "10",
+        "19"
+      ],
       "commentaire": "Question factuelle ciblée sur un attribut (prix) d'un événement nommé : le retrieval doit être précis, la génération fidèle au champ tarif."
     },
     {
@@ -118,8 +187,12 @@
       "question": "Un atelier musical pour les enfants de 5 à 10 ans à Issy-les-Moulineaux en juin 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Oui : « Musicouvertes : Spécial fête de la musique », un atelier musical gratuit pour les 5-10 ans au Temps des Cerises à Issy-les-Moulineaux, le samedi 20 juin 2026 à 15h00.",
-      "uids_attendus": ["88720077"],
-      "mots_cles_attendus": ["Musicouvertes"],
+      "uids_attendus": [
+        "88720077"
+      ],
+      "mots_cles_attendus": [
+        "Musicouvertes"
+      ],
       "commentaire": "Contrainte d'âge explicite (champs age_min/age_max renseignés sur la fiche) + gratuité."
     },
     {
@@ -128,8 +201,12 @@
       "question": "Quel festival des arts de la rue se déroule à Nanterre en juin 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "La 36e édition de « Parade(s) », le festival des arts de la rue de la ville de Nanterre, se tient du 5 au 7 juin 2026 (ouverture le vendredi 5 juin à 16h30 au parc des Anciennes-Mairies). Gratuit.",
-      "uids_attendus": ["18788773"],
-      "mots_cles_attendus": ["Parade"],
+      "uids_attendus": [
+        "18788773"
+      ],
+      "mots_cles_attendus": [
+        "Parade"
+      ],
       "commentaire": "Festival récurrent bien identifié, réponse attendue avec dates et lieu."
     },
     {
@@ -138,8 +215,13 @@
       "question": "Y a-t-il des webinaires sur l'élevage en juin 2025 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Oui, deux webinaires INOSYS Réseaux d'élevage (en ligne, sur inscription) : « À la rencontre des producteurs de lait de chèvre » le vendredi 13 juin 2025 à 14h00, et le webinaire réseau ovins viande le lundi 16 juin 2025 à 13h30.",
-      "uids_attendus": ["30640131", "73186073"],
-      "mots_cles_attendus": ["webinaire"],
+      "uids_attendus": [
+        "30640131",
+        "73186073"
+      ],
+      "mots_cles_attendus": [
+        "webinaire"
+      ],
       "commentaire": "Modalité « En ligne » (champ attendance) + thème hors culture classique : vérifie la couverture de toute la diversité du corpus OpenAgenda."
     },
     {
@@ -148,7 +230,12 @@
       "question": "Que faire à Paris le 1er juillet 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Plusieurs possibilités à Paris le 1er juillet 2026 : un mini-concert conférencé gratuit sur le Maloya à la médiathèque James Baldwin à 16h00, le Dave Bristow Quintet « Sides » au JASS CLUB (19h30 et 21h30, 10-19€), le spectacle « Al Sirah Al Hilaliyyah » à 20h00 (5-35€), ou encore le stage « Peindre à l'aquarelle au jardin d'Eugène Delacroix » qui démarre ce jour-là.",
-      "uids_attendus": ["65255668", "32194038", "10917280", "20568892"],
+      "uids_attendus": [
+        "65255668",
+        "32194038",
+        "10917280",
+        "20568892"
+      ],
       "mots_cles_attendus": [],
       "commentaire": "Question ouverte avec plusieurs bonnes réponses : le retrieval est réussi si au moins un des événements du jour est remonté ; la réponse de référence sert de base de similarité souple, pas de liste exhaustive obligatoire."
     },
@@ -159,7 +246,9 @@
       "comportement_attendu": "aucun_resultat",
       "reponse_reference": "Aucun événement à Marseille ne figure dans les données disponibles : la base couvre uniquement les événements d'Île-de-France. Je ne peux donc pas recommander de concert à Marseille.",
       "uids_attendus": [],
-      "mots_cles_attendus": ["Marseille"],
+      "mots_cles_attendus": [
+        "Marseille"
+      ],
       "commentaire": "Hors périmètre géographique (vérifié : 0 événement à Marseille dans le corpus). Le système ne doit RIEN inventer ni recommander un événement francilien comme s'il était marseillais."
     },
     {
@@ -198,8 +287,12 @@
       "question": "Où voir un ciné-concert gratuit à Paris en juillet 2026 ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Le ciné-concert « Dracula » par l'orchestre des Clefs de Seine, gratuit, a lieu le jeudi 9 juillet 2026 à 21h30 à La Roche (Plateau urbain) à Paris : 1h15 de musique inédite accompagnant le film.",
-      "uids_attendus": ["95057962"],
-      "mots_cles_attendus": ["Dracula"],
+      "uids_attendus": [
+        "95057962"
+      ],
+      "mots_cles_attendus": [
+        "Dracula"
+      ],
       "commentaire": "Format hybride (ciné-concert) : teste la précision thématique du retrieval au-delà du simple mot « concert »."
     },
     {
@@ -208,8 +301,12 @@
       "question": "Peut-on visiter l'École militaire d'équitation de Fontainebleau ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Oui : une visite guidée de l'École militaire d'équitation de Fontainebleau est proposée les 6 et 7 juin 2026, dans le cadre du Festival de l'histoire de l'art.",
-      "uids_attendus": ["42635578"],
-      "mots_cles_attendus": ["équitation"],
+      "uids_attendus": [
+        "42635578"
+      ],
+      "mots_cles_attendus": [
+        "équitation"
+      ],
       "commentaire": "Question sans date : le système doit retrouver l'événement et fournir ses dates."
     },
     {
@@ -218,8 +315,15 @@
       "question": "Quand et où se tient le Sahab Festival ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Le Sahab Festival, consacré à la scène artistique palestinienne, se tient les 5 et 6 juin 2026 à La Gaîté Lyrique à Paris, avec notamment des expériences immersives et l'œuvre collaborative « Gaza : A Collective Scene ».",
-      "uids_attendus": ["40484738", "86529544", "25283111", "56352426"],
-      "mots_cles_attendus": ["Gaîté"],
+      "uids_attendus": [
+        "40484738",
+        "86529544",
+        "25283111",
+        "56352426"
+      ],
+      "mots_cles_attendus": [
+        "Gaîté"
+      ],
       "commentaire": "Festival décliné en quatre fiches (programme par volet) : teste la déduplication et la synthèse multi-fiches d'un même événement parapluie."
     },
     {
@@ -228,8 +332,12 @@
       "question": "Le festival ManiFeste-2026 est-il en accès libre ?",
       "comportement_attendu": "repondre",
       "reponse_reference": "Le festival ManiFeste-2026, festival de création de l'Ircam à Paris du 3 au 27 juin 2026 (concerts, spectacles, installations), est accessible sur inscription.",
-      "uids_attendus": ["67125361"],
-      "mots_cles_attendus": ["inscription"],
+      "uids_attendus": [
+        "67125361"
+      ],
+      "mots_cles_attendus": [
+        "inscription"
+      ],
       "commentaire": "Nuance tarifaire : ni « gratuit » ni prix chiffré mais « Sur inscription » (valeur normalisée par clean_data.py) — la réponse doit restituer cette nuance sans l'assimiler à « gratuit »."
     }
   ]

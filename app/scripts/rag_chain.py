@@ -37,6 +37,14 @@ from langchain_mistralai import ChatMistralAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 
+# Import compatible avec les deux modes d'exécution :
+#  - importé comme package depuis l'API (scripts.rag_chain) → scripts.query_filter
+#  - lancé en CLI (python app/scripts/rag_chain.py)          → query_filter
+try:
+    from scripts.query_filter import parse_constraints, event_matches
+except ModuleNotFoundError:
+    from query_filter import parse_constraints, event_matches
+
 # ── Configuration ─────────────────────────────────────────────────────────────
 
 load_dotenv()   # charge .env en exécution locale (MISTRAL_API_KEY...) ;
@@ -123,6 +131,11 @@ class RagChain:
             data = json.load(f)
         events = data["results"] if isinstance(data, dict) else data
         self.events_by_uid = {e["uid"]: e for e in events}
+        # Ensemble des villes du corpus — sert au filtrage par ville
+        # (query_filter ne reconnaît que des villes réellement présentes)
+        self.known_cities = {
+            e.get("city", "") for e in events if e.get("city")
+        }
         log.info(f"{len(self.events_by_uid)} événements en mémoire")
 
         # 5. LLM Mistral via l'API de la plateforme mistral.ai
@@ -167,13 +180,38 @@ class RagChain:
 
     def retrieve(self, question: str) -> list[dict]:
         """
-        R du RAG : recherche FAISS large, déduplication par uid,
-        small-to-big (récupération des événements complets).
-        Retourne une liste de dicts {event, score} triée par pertinence.
+        R du RAG — recherche HYBRIDE : sémantique (FAISS) + filtrage par
+        métadonnées (date, ville/département, gratuité).
+
+        Stratégie « filtrer-puis-classer » quand des contraintes dures sont
+        détectées : la recherche vectorielle pure place les événements
+        thématiquement proches en tête SANS tenir compte de la date/du lieu ;
+        l'événement correct (bonne date, bonne ville) peut donc se trouver
+        très loin dans le classement sémantique. On demande à FAISS de
+        considérer TOUS les vecteurs (fetch_k = ntotal), on ne garde que ceux
+        dont l'événement respecte les contraintes, puis on prend les plus
+        proches. Sans contrainte : recherche sémantique pure (k_chunks).
+
+        Si une contrainte explicite ne matche RIEN (ex. « Marseille »), la
+        liste est vide → le LLM répond « aucun événement », ce qui est correct.
         """
-        results = self.vectorstore.similarity_search_with_score(
-            question, k=self.k_chunks
-        )
+        constraints = parse_constraints(question, known_cities=self.known_cities)
+
+        if constraints.is_empty():
+            # Pas de contrainte dure → comportement sémantique pur
+            results = self.vectorstore.similarity_search_with_score(
+                question, k=self.k_chunks
+            )
+        else:
+            # Filtrer-puis-classer : fetch_k = tous les vecteurs pour un rappel
+            # complet, le filtre élimine les événements hors contraintes,
+            # k = marge avant déduplication par uid.
+            results = self.vectorstore.similarity_search_with_score(
+                question,
+                k=self.k_events * 5,
+                filter=lambda meta: event_matches(meta, constraints),
+                fetch_k=self.vectorstore.index.ntotal,
+            )
 
         # Déduplication : un événement = son meilleur score (le plus petit en L2)
         best_by_uid: dict[str, float] = {}
