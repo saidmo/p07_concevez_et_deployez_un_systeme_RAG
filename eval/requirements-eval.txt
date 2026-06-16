@@ -1,35 +1,63 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Dépendances de l'ÉVALUATION (eval/evaluate_rag.py) — outil de dev uniquement.
+# ============================================================================
+#  Dépendances d'ÉVALUATION — à installer dans un venv DÉDIÉ (.venv-eval)
+# ============================================================================
 #
-# Volontairement séparé de app/requirements.txt : ragas impose ses propres
-# contraintes sur langchain / langchain-core / pydantic. À installer dans un
-# VENV DÉDIÉ pour ne pas perturber l'environnement de l'API.
+#  Ce fichier est SÉPARÉ de app/requirements.txt à dessein : Ragas impose des
+#  contraintes de versions sur l'écosystème LangChain qui ne doivent pas
+#  contaminer l'environnement de l'application.
 #
-#   python -m venv .venv-eval
-#   .venv-eval\Scripts\activate        (Windows)   |   source .venv-eval/bin/activate  (Linux/Mac)
-#   pip install -r eval/requirements-eval.txt
+#  Installation :
+#     python -m venv .venv-eval
+#     .venv-eval\Scripts\activate          (Windows)
+#     # source .venv-eval/bin/activate      (Linux / macOS)
+#     pip install -r eval/requirements-eval.txt
 #
-# L'API, elle, tourne dans le venv de l'app (uvicorn main:app --app-dir app),
-# dans un AUTRE terminal. evaluate_rag.py la contacte par HTTP (POST /ask).
-# ─────────────────────────────────────────────────────────────────────────────
+#  /!\ CONFLIT RAGAS — NE PAS « moderniser » les versions LangChain ci-dessous.
+#  Ragas 0.2.15 a ete ecrit pour la generation LangChain 0.3.x. Si pip installe
+#  les langchain-* en 1.x (versions recentes), l'import
+#  `langchain_community.chat_models.vertexai` echoue (module supprime en 1.x).
+#  Les versions 0.3.x ci-dessous sont la combinaison testee qui fonctionne.
+# ============================================================================
 
 # --- Torch CPU-only ---
-# Même version que l'app, forcée en CPU pour éviter le téléchargement CUDA.
-# (Sur Windows, torch PyPI est déjà CPU ; l'index explicite garantit la portabilité.)
+# L'index PyTorch CPU est spécifié directement ici pour éviter
+# que pip installe la version CUDA (~2.5 Go) par défaut.
+# torch >= 2.6.0 requis : première version avec des wheels Python 3.13
+# (venv local), tout en restant compatible Python 3.11 (image Docker).
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.6.0+cpu
 
 # --- Évaluation RAG ---
-# ragas pilote la résolution de langchain-core / pydantic : on l'épingle, lui
-# et datasets, mais on laisse pip ajuster les langchain-* ci-dessous au besoin.
 ragas==0.2.15
+
+# --- Écosystème LangChain (génération 0.3.x — figé pour Ragas, voir avertissement) ---
+langchain==0.3.27
+langchain-core==0.3.74
+langchain-community==0.3.27
+langchain-text-splitters==0.3.9
+langchain-openai==0.2.14
+langchain-mistralai==0.2.10
+langchain-huggingface==0.1.2
+
+# --- Embeddings locaux (juge de similarité Ragas = SBERT, pas OpenAI) ---
+sentence-transformers==5.6.0
+transformers==5.12.1
+tokenizers==0.22.2
+
+# --- Jeu de données d'évaluation (Ragas s'appuie sur datasets) ---
 datasets==3.2.0
 
-# --- Briques réutilisées par evaluate_rag.py ---
-# Versions volontairement NON épinglées : pip choisit ce qui est compatible
-# avec ragas (évite de recréer le conflit qu'on cherche à isoler).
-requests
-python-dotenv
-langchain-mistralai          # LLM juge (ChatMistralAI) — même clé MISTRAL_API_KEY que l'app
-langchain-huggingface        # wrapper embeddings pour ragas
-sentence-transformers        # modèle SBERT exécuté ici pour les métriques ragas
+# --- Calcul / données ---
+numpy==2.4.6
+pandas==3.0.3
+scikit-learn==1.9.0
+
+# --- Client LLM (juge Ragas via l'API Mistral / compat OpenAI) ---
+openai==1.109.1
+
+# --- Utilitaires ---
+python-dotenv==1.2.2          # lecture du .env (cle MISTRAL_API_KEY)
+tiktoken==0.13.0              # comptage de tokens (Ragas)
+tenacity==9.1.4               # retries sur les appels API (absorbe les 429)
+nest-asyncio==1.6.0           # boucles asyncio imbriquees (Ragas)
+
