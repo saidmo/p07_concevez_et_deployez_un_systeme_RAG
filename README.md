@@ -27,8 +27,10 @@ Question  →  embedding SBERT  →  recherche FAISS  →  événements pertinen
 - [Endpoints](#endpoints)
 - [Tests](#tests)
 - [Évaluation](#évaluation)
+- [Documentation](#documentation)
 - [Exécution avec Docker](#exécution-avec-docker)
 - [Variables d'environnement](#variables-denvironnement)
+- [Pistes d'amélioration](#pistes-damélioration)
 
 ---
 
@@ -43,8 +45,9 @@ Le flux complet, de la donnée brute à la réponse :
    ou vides.
 3. **Indexation** (`build_index.py`) — découpage en chunks, vectorisation
    SBERT, construction de l'index FAISS et d'un `manifest.json` de traçabilité.
-4. **Chaîne RAG** (`rag_chain.py`) — recherche vectorielle, déduplication,
-   pattern *small-to-big*, prompt anti-hallucination, génération Mistral.
+4. **Chaîne RAG** (`rag_chain.py` + `query_filter.py`) — recherche **hybride**
+   (filtrage par métadonnées + recherche vectorielle), déduplication, pattern
+   *small-to-big*, prompt anti-hallucination, génération Mistral.
 5. **API** (`main.py`) — exposition HTTP : `/ask`, `/rebuild`, `/health`.
 
 Le *retrieval* applique un schéma **small-to-big** : la recherche se fait sur
@@ -53,6 +56,16 @@ sont fournis au LLM (contexte riche). Concrètement : FAISS remonte les 10
 meilleurs chunks, ceux-ci sont dédupliqués par identifiant d'événement
 (`uid`), et les 4 événements distincts les plus pertinents sont reconstitués
 en entier pour le prompt.
+
+**Recherche hybride.** La similarité sémantique seule ne sait pas honorer les
+contraintes « dures » d'une question (date, ville, département, gratuité) :
+elle rapproche « concert de jazz à Paris en juillet 2026 » de tous les concerts
+de jazz, sans distinguer l'année ni la ville. Le module `query_filter.py`
+extrait ces contraintes de façon **déterministe** (regex + gazetteer des 8
+départements franciliens), puis le retrieval procède en **filtrer-puis-classer**
+(`fetch_k` = tous les vecteurs → rappel complet) : on ne garde que les
+événements respectant les contraintes, puis on les classe par similarité. En
+l'absence de contrainte, on retombe sur une recherche sémantique pure.
 
 ---
 
@@ -95,19 +108,26 @@ p07_concevez_et_deployez_un_systeme_RAG/
 │       ├── collect_data.py     # 1. collecte OpenAgenda (OpenDataSoft / Huwise)
 │       ├── clean_data.py       # 2. nettoyage et normalisation
 │       ├── build_index.py      # 3. chunking + embeddings + index FAISS (+ run_build())
-│       └── rag_chain.py        # 4. chaîne RAG (retrieval + génération Mistral)
+│       ├── rag_chain.py        # 4. chaîne RAG (recherche hybride + génération Mistral)
+│       └── query_filter.py     #    extraction déterministe des contraintes (filtrage)
 │
-├── tests/                      # tests unitaires (pytest)
+├── tests/                      # tests unitaires (pytest) — 112 tests
 │   ├── conftest.py             # ajoute app/ au sys.path
 │   ├── test_clean_data.py      # nettoyage
 │   ├── test_index.py           # event_to_document, chunking
 │   ├── test_rag_chain.py       # déduplication, small-to-big, manifest
-│   └── test_api.py             # endpoints, codes HTTP, /rebuild
+│   ├── test_api.py             # endpoints, codes HTTP, /rebuild
+│   └── test_query_filter.py    # extraction des contraintes (dates, lieux, gratuité)
 │
 ├── eval/                       # évaluation de la qualité du système
 │   ├── jeu_de_test_annote.json # 21 cas annotés (questions / réponses de référence)
 │   ├── evaluate_rag.py         # évaluation automatique (Ragas + métriques maison)
-│   └── requirements-eval.txt   # dépendances d'évaluation (venv dédié)
+│   ├── requirements-eval.txt   # dépendances d'évaluation (venv dédié)
+│   └── resultats_evaluation.json # résultats du dernier run
+│
+├── docs/                       # documentation
+│   ├── rapport_technique.md    # rapport technique complet
+│   └── architecture_rag.png    # schéma d'architecture (source : .svg)
 │
 └── data/                       # NON versionné (voir .gitignore)
     ├── raw/                    # export OpenAgenda brut
@@ -255,10 +275,10 @@ modèle chargé) :
 python -m pytest tests/ -v
 ```
 
-Couverture : nettoyage des données, transformation événement → document et
-chunking, déduplication / small-to-big / vérification du manifest, et les
-endpoints de l'API (codes `200` / `422` / `503` / `500`, sécurité et cycle de
-vie de `/rebuild`).
+Couverture (**112 tests**) : nettoyage des données, transformation événement →
+document et chunking, déduplication / small-to-big / vérification du manifest,
+extraction des contraintes (dates, lieux, gratuité), et les endpoints de l'API
+(codes `200` / `422` / `503` / `500`, sécurité et cycle de vie de `/rebuild`).
 
 ---
 
@@ -304,6 +324,31 @@ python eval/evaluate_rag.py --no-ragas     # métriques maison seules
 Résultats écrits dans `eval/resultats_evaluation.json` (agrégats + détail par
 cas) en plus du tableau console.
 
+**Résultats du dernier run (21 cas) :**
+
+| Métrique | Résultat |
+|---|---|
+| Retrieval hit-rate | 94,1 % (16/17) |
+| Abstention correcte (cas négatifs) | 100 % (4/4) |
+| Couverture des mots-clés | 81,2 % |
+| Ragas — fidélité au contexte | 78,2 % |
+| Ragas — pertinence de la réponse | 86,3 % |
+| Ragas — exactitude vs référence | 65,5 % |
+| Ragas — précision du contexte | 70,6 % |
+
+L'introduction de la recherche hybride a fait progresser le retrieval hit-rate
+de 0 % (sémantique pur, qui ignorait les contraintes de date/lieu) à 94 %.
+
+---
+
+## Documentation
+
+Le **rapport technique complet** se trouve dans `docs/rapport_technique.md` :
+objectifs, architecture, préparation des données, choix des modèles,
+construction de la base vectorielle, API, évaluation détaillée, limites et
+pistes d'amélioration. Le schéma d'architecture (`docs/architecture_rag.png`)
+illustre le pipeline en deux temps (indexation hors-ligne / requête en ligne).
+
 ---
 
 ## Exécution avec Docker
@@ -343,6 +388,24 @@ MISTRAL_API_KEY=votre_cle_ici
 MISTRAL_MODEL=mistral-small-latest
 API_KEY=changez_cette_valeur
 ```
+
+---
+
+---
+
+## Pistes d'amélioration
+
+- **Extraction des contraintes plus robuste.** Le filtrage est aujourd'hui
+  déterministe (regex + gazetteer), donc limité aux formulations anticipées.
+  Le rendre robuste aux tournures libres (« le week-end de Pâques », « cet
+  été ») passerait par un outil de reconnaissance d'expressions temporelles
+  ou par une extraction déléguée au LLM (renvoyant les contraintes en JSON).
+- **Mise en production.** Palier API Mistral payant (pour lever la limite de
+  débit du palier gratuit), monitoring, cache des questions fréquentes,
+  sécurisation complète des endpoints, et intégration continue exécutant
+  `evaluate_rag.py` automatiquement.
+- **Enrichissement fonctionnel.** Historique conversationnel (questions de
+  suivi), filtres utilisateur explicites, extension à d'autres régions.
 
 ---
 
