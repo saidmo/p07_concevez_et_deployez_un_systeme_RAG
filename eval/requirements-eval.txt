@@ -1,0 +1,35 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Dépendances de l'ÉVALUATION (eval/evaluate_rag.py) — outil de dev uniquement.
+#
+# Volontairement séparé de app/requirements.txt : ragas impose ses propres
+# contraintes sur langchain / langchain-core / pydantic. À installer dans un
+# VENV DÉDIÉ pour ne pas perturber l'environnement de l'API.
+#
+#   python -m venv .venv-eval
+#   .venv-eval\Scripts\activate        (Windows)   |   source .venv-eval/bin/activate  (Linux/Mac)
+#   pip install -r eval/requirements-eval.txt
+#
+# L'API, elle, tourne dans le venv de l'app (uvicorn main:app --app-dir app),
+# dans un AUTRE terminal. evaluate_rag.py la contacte par HTTP (POST /ask).
+# ─────────────────────────────────────────────────────────────────────────────
+
+# --- Torch CPU-only ---
+# Même version que l'app, forcée en CPU pour éviter le téléchargement CUDA.
+# (Sur Windows, torch PyPI est déjà CPU ; l'index explicite garantit la portabilité.)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0+cpu
+
+# --- Évaluation RAG ---
+# ragas pilote la résolution de langchain-core / pydantic : on l'épingle, lui
+# et datasets, mais on laisse pip ajuster les langchain-* ci-dessous au besoin.
+ragas==0.2.15
+datasets==3.2.0
+
+# --- Briques réutilisées par evaluate_rag.py ---
+# Versions volontairement NON épinglées : pip choisit ce qui est compatible
+# avec ragas (évite de recréer le conflit qu'on cherche à isoler).
+requests
+python-dotenv
+langchain-mistralai          # LLM juge (ChatMistralAI) — même clé MISTRAL_API_KEY que l'app
+langchain-huggingface        # wrapper embeddings pour ragas
+sentence-transformers        # modèle SBERT exécuté ici pour les métriques ragas

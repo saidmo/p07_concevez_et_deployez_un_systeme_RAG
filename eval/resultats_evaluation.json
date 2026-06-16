@@ -1,0 +1,79 @@
+{
+  "execute_le": "2026-06-16T15:01:58.449131+00:00",
+  "api_base": "http://localhost:8000",
+  "modele_juge": "mistral-small-latest",
+  "n_cas_evalues": 3,
+  "metriques_maison": {
+    "retrieval_hit_rate": 0.0,
+    "couverture_mots_cles": 0.0,
+    "taux_abstention_correct": null,
+    "n_cas_repondre": 3,
+    "n_cas_negatifs": 0
+  },
+  "metriques_ragas": null,
+  "detail_par_cas": [
+    {
+      "id": "Q01",
+      "categorie": "recherche_thematique",
+      "comportement_attendu": "repondre",
+      "question": "Quels concerts de jazz à Paris début juillet 2026 ?",
+      "answer": "Aucun événement de jazz à Paris début juillet 2026 ne correspond à ta demande dans la liste fournie.",
+      "uids_attendus": [
+        "32194038"
+      ],
+      "uids_obtenus": [
+        "46032578",
+        "39389254",
+        "58993289",
+        "44929097"
+      ],
+      "timings": {
+        "retrieval_s": 0.738,
+        "generation_s": 0.56
+      },
+      "erreur": null
+    },
+    {
+      "id": "Q02",
+      "categorie": "contrainte_tarif",
+      "comportement_attendu": "repondre",
+      "question": "Y a-t-il un concert gratuit à Paris le dimanche 21 juin 2026 ?",
+      "answer": "Non, il n'y a pas de concert gratuit à Paris le dimanche 21 juin 2026 parmi les événements proposés.\n\n*(L'événement \"Classicn' Swing, 15 ans déjà !\" a lieu le samedi 21 juin 2025, et non en 2026.)*",
+      "uids_attendus": [
+        "63959528"
+      ],
+      "uids_obtenus": [
+        "21147140",
+        "44929097",
+        "43976550",
+        "24692255"
+      ],
+      "timings": {
+        "retrieval_s": 0.076,
+        "generation_s": 0.85
+      },
+      "erreur": null
+    },
+    {
+      "id": "Q03",
+      "categorie": "contrainte_tarif",
+      "comportement_attendu": "repondre",
+      "question": "Où puis-je fêter la Fête de la musique gratuitement dans les Yvelines en 2026 ?",
+      "answer": "Aucun événement correspondant à la Fête de la musique **gratuite dans les Yvelines en 2026** n'est disponible dans la liste fournie. Les événements gratuits proposés concernent soit d'autres années (2025), soit d'autres départements (comme Aulnay-sous-Bois en Seine-Saint-Denis).\n\nSi tu cherches des alternatives, je te conseille de consulter le site officiel de la **Fête de la musique** ou les mairies des Yvelines pour des événements 2026.",
+      "uids_attendus": [
+        "33040290"
+      ],
+      "uids_obtenus": [
+        "46708464",
+        "43976550",
+        "26655682",
+        "53192336"
+      ],
+      "timings": {
+        "retrieval_s": 0.066,
+        "generation_s": 0.99
+      },
+      "erreur": null
+    }
+  ]
+}

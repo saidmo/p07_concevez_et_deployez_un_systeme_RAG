@@ -1,0 +1,30 @@
+services:
+
+  # ----------------------------------------------------------------
+  # APPLICATION — FastAPI + LangChain + FAISS + SBERT
+  # La génération est déléguée à l'API Mistral (plateforme mistral.ai),
+  # clé dans .env — plus aucun LLM hébergé localement.
+  # ----------------------------------------------------------------
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: rag_app
+    environment:
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - MISTRAL_MODEL=mistral-small-latest
+      - SBERT_MODEL=paraphrase-multilingual-mpnet-base-v2
+      - FAISS_INDEX_PATH=/data/faiss_index
+      - RAW_DATA_PATH=/data/raw
+      - CLEAN_DATA_PATH=/data/processed/evenements_idf_clean.json
+      - API_KEY=${API_KEY}
+    volumes:
+      - ./data:/data                          # données brutes + index FAISS persistés hors conteneur
+      - ./app/scripts:/app/scripts            # scripts éditables sans rebuild
+      - hf_cache:/root/.cache/huggingface     # modèle SBERT (~1 Go) téléchargé une seule fois
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+volumes:
+  hf_cache:                  # cache HuggingFace (modèle SBERT) persisté entre les rebuilds

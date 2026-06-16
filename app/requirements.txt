@@ -1,0 +1,49 @@
+# ============================================================
+# RAG Puls-Events — requirements.txt
+# Python 3.11 | CPU-only | Docker
+# ============================================================
+
+# --- Torch CPU-only ---
+# L'index PyTorch CPU est spécifié directement ici pour éviter
+# que pip installe la version CUDA (~2.5 Go) par défaut.
+# torch >= 2.6.0 requis : première version avec des wheels Python 3.13
+# (venv local), tout en restant compatible Python 3.11 (image Docker).
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0+cpu
+
+# --- LLM & RAG orchestration ---
+langchain==0.3.25
+langchain-community==0.3.24
+langchain-mistralai==0.2.10      # intégration API Mistral (plateforme mistral.ai)
+langchain-huggingface==0.1.2     # intégration HuggingFace Embeddings / SBERT
+
+# --- Embeddings (SBERT, 100% local et gratuit ; seul le LLM passe par l'API Mistral) ---
+sentence-transformers==3.4.1
+# Modèle utilisé : paraphrase-multilingual-mpnet-base-v2 (français + multilingue)
+# Téléchargé automatiquement au premier lancement de build_index.py
+
+# --- Vector store ---
+faiss-cpu==1.9.0.post1           # CPU-only ; .post1 = ajout des wheels
+                                 # Python 3.13 (venv local), idem 3.11 (Docker)
+
+# --- API ---
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+pydantic==2.11.4
+
+# --- Collecte données (OpenAgenda / OpenDataSoft) ---
+requests==2.32.3
+python-dotenv==1.1.0
+tqdm==4.67.1
+
+# --- Nettoyage HTML (longdescription_fr) ---
+beautifulsoup4==4.13.4
+lxml==5.3.2
+
+# --- Data ---
+pandas==2.2.3
+numpy==2.2.5
+
+# --- Tests ---
+pytest==8.3.5
+httpx==0.28.1                    # client HTTP async pour tester FastAPI
