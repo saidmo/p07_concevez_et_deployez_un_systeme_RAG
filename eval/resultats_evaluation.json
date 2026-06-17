@@ -1,5 +1,5 @@
 {
-  "execute_le": "2026-06-16T17:39:57.054705+00:00",
+  "execute_le": "2026-06-17T10:26:51.458496+00:00",
   "api_base": "http://localhost:8000",
   "modele_juge": "mistral-small-latest",
   "n_cas_evalues": 21,
@@ -12,10 +12,10 @@
   },
   "metriques_ragas": {
     "agregats": {
-      "faithfulness": 0.782,
-      "answer_relevancy": 0.863,
+      "faithfulness": 0.803,
+      "answer_relevancy": 0.82,
       "answer_correctness": 0.655,
-      "context_precision": 0.706
+      "context_precision": 0.643
     },
     "detail_par_cas": [
       {
@@ -29,104 +29,104 @@
         "id": "Q02",
         "faithfulness": 0.833,
         "answer_relevancy": 0.939,
-        "answer_correctness": 0.491,
+        "answer_correctness": 0.517,
         "context_precision": 0.25
       },
       {
         "id": "Q03",
-        "faithfulness": 0.8,
-        "answer_relevancy": 0.802,
-        "answer_correctness": 0.624,
-        "context_precision": 1.0
+        "faithfulness": 0.4,
+        "answer_relevancy": 0.831,
+        "answer_correctness": 0.593,
+        "context_precision": null
       },
       {
         "id": "Q04",
-        "faithfulness": 0.0,
-        "answer_relevancy": 0.93,
-        "answer_correctness": 0.152,
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.0,
+        "answer_correctness": 0.148,
         "context_precision": 0.0
       },
       {
         "id": "Q05",
-        "faithfulness": 0.75,
-        "answer_relevancy": 0.786,
-        "answer_correctness": 0.565,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.96,
+        "answer_correctness": 0.687,
         "context_precision": 0.5
       },
       {
         "id": "Q06",
         "faithfulness": 0.6,
-        "answer_relevancy": 0.951,
-        "answer_correctness": 0.981,
-        "context_precision": 1.0
+        "answer_relevancy": null,
+        "answer_correctness": 0.982,
+        "context_precision": null
       },
       {
         "id": "Q07",
         "faithfulness": 0.2,
-        "answer_relevancy": 0.901,
-        "answer_correctness": 0.715,
-        "context_precision": 1.0
+        "answer_relevancy": null,
+        "answer_correctness": 0.657,
+        "context_precision": null
       },
       {
         "id": "Q08",
-        "faithfulness": 0.714,
-        "answer_relevancy": 0.805,
-        "answer_correctness": null,
+        "faithfulness": 0.667,
+        "answer_relevancy": null,
+        "answer_correctness": 0.824,
         "context_precision": 1.0
       },
       {
         "id": "Q09",
         "faithfulness": 0.75,
-        "answer_relevancy": 0.951,
-        "answer_correctness": 0.985,
+        "answer_relevancy": 0.95,
+        "answer_correctness": 0.795,
         "context_precision": 1.0
       },
       {
         "id": "Q10",
         "faithfulness": 1.0,
-        "answer_relevancy": null,
+        "answer_relevancy": 0.95,
         "answer_correctness": 0.955,
         "context_precision": 1.0
       },
       {
         "id": "Q11",
         "faithfulness": 0.8,
-        "answer_relevancy": null,
-        "answer_correctness": null,
+        "answer_relevancy": 0.83,
+        "answer_correctness": 0.771,
         "context_precision": 0.917
       },
       {
         "id": "Q12",
         "faithfulness": 1.0,
         "answer_relevancy": 0.825,
-        "answer_correctness": 0.691,
+        "answer_correctness": 0.716,
         "context_precision": 0.0
       },
       {
         "id": "Q13",
-        "faithfulness": 0.933,
-        "answer_relevancy": 0.883,
-        "answer_correctness": 0.861,
+        "faithfulness": 0.909,
+        "answer_relevancy": 0.882,
+        "answer_correctness": 0.856,
         "context_precision": 1.0
       },
       {
         "id": "Q18",
         "faithfulness": 1.0,
-        "answer_relevancy": 0.369,
-        "answer_correctness": 0.811,
+        "answer_relevancy": 0.608,
+        "answer_correctness": 0.616,
         "context_precision": 0.333
       },
       {
         "id": "Q19",
-        "faithfulness": 0.917,
-        "answer_relevancy": 0.903,
-        "answer_correctness": 0.302,
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.829,
+        "answer_correctness": 0.54,
         "context_precision": 1.0
       },
       {
         "id": "Q20",
         "faithfulness": 1.0,
-        "answer_relevancy": 0.964,
+        "answer_relevancy": 0.935,
         "answer_correctness": 0.563,
         "context_precision": 1.0
       },
@@ -134,7 +134,7 @@
         "id": "Q21",
         "faithfulness": 1.0,
         "answer_relevancy": 0.961,
-        "answer_correctness": 0.594,
+        "answer_correctness": 0.374,
         "context_precision": 1.0
       }
     ],
@@ -163,8 +163,8 @@
         "67713452"
       ],
       "timings": {
-        "retrieval_s": 0.349,
-        "generation_s": 0.88
+        "retrieval_s": 0.326,
+        "generation_s": 0.89
       },
       "erreur": null
     },
@@ -184,8 +184,8 @@
         "63959528"
       ],
       "timings": {
-        "retrieval_s": 0.306,
-        "generation_s": 1.11
+        "retrieval_s": 0.213,
+        "generation_s": 1.42
       },
       "erreur": null
     },
@@ -194,7 +194,7 @@
       "categorie": "contrainte_tarif",
       "comportement_attendu": "repondre",
       "question": "Où puis-je fêter la Fête de la musique gratuitement dans les Yvelines en 2026 ?",
-      "answer": "Voici les événements gratuits pour fêter la **Fête de la musique** dans les Yvelines en 2026 :\n\n1. **Fête de la musique**\n   - **Lieu** : La Celle Saint-Cloud (78170)\n   - **Date** : 20 et 21 juin 2026\n   - **Tarif** : Gratuit\n\n*(Aucun autre événement parmi ceux proposés ne correspond à la Fête de la musique dans les Yvelines.)*",
+      "answer": "Voici les événements gratuits pour fêter la Fête de la musique dans les Yvelines en 2026 :\n\n- **Fête de la musique** à La Celle Saint-Cloud\n  *Lieu* : Médiathèque (20 juin) et place Berthet (21 juin)\n  *Date* : 20 et 21 juin 2026\n  *Tarif* : Gratuit",
       "uids_attendus": [
         "33040290"
       ],
@@ -205,8 +205,8 @@
         "69052419"
       ],
       "timings": {
-        "retrieval_s": 1.247,
-        "generation_s": 0.87
+        "retrieval_s": 0.749,
+        "generation_s": 0.77
       },
       "erreur": null
     },
@@ -215,7 +215,7 @@
       "categorie": "contrainte_public",
       "comportement_attendu": "repondre",
       "question": "Y a-t-il un spectacle de marionnettes gratuit pour les enfants à Versailles en janvier 2026 ?",
-      "answer": "Non, aucun spectacle de marionnettes gratuit pour les enfants n'est proposé à Versailles en janvier 2026 parmi les événements disponibles.",
+      "answer": "Non, aucun événement de marionnettes gratuit pour les enfants à Versailles en janvier 2026 n'est disponible dans la liste fournie.",
       "uids_attendus": [
         "49816503",
         "27649694"
@@ -227,8 +227,8 @@
         "72046290"
       ],
       "timings": {
-        "retrieval_s": 0.443,
-        "generation_s": 0.51
+        "retrieval_s": 0.296,
+        "generation_s": 0.5
       },
       "erreur": null
     },
@@ -237,7 +237,7 @@
       "categorie": "recherche_thematique",
       "comportement_attendu": "repondre",
       "question": "Quelle exposition sur l'esprit critique est proposée en Seine-Saint-Denis en mars 2026 ?",
-      "answer": "Voici l'exposition correspondant à ta recherche en Seine-Saint-Denis en mars 2026 :\n\n**Critibulles, l'exposition esprit critique**\nLieu : Médiathèque Gulliver, 7 rue du Plouich, 93200 Saint-Denis\nDates : 19 - 22 mars 2026\nTarif : Non précisé (à vérifier sur place)",
+      "answer": "Voici l'exposition sur l'esprit critique proposée en Seine-Saint-Denis en mars 2026 :\n\n**Critibulles, l'exposition esprit critique**\n📍 Médiathèque Gulliver, 7 rue du Plouich, 93200 Saint-Denis\n📅 Du 19 au 22 mars 2026\n🎟 Gratuit",
       "uids_attendus": [
         "34054226",
         "82601557",
@@ -267,8 +267,8 @@
         "97614447"
       ],
       "timings": {
-        "retrieval_s": 0.413,
-        "generation_s": 0.79
+        "retrieval_s": 0.335,
+        "generation_s": 0.76
       },
       "erreur": null
     },
@@ -277,7 +277,7 @@
       "categorie": "contrainte_date",
       "comportement_attendu": "repondre",
       "question": "Y a-t-il eu une visite nocturne gratuite des Grands Appartements du château de Fontainebleau en mai 2026 ?",
-      "answer": "Oui, il y a eu une visite nocturne gratuite des Grands Appartements du château de Fontainebleau en mai 2026 :\n\n**Visite des Grands Appartements en nocturne**\n- **Lieu** : Château de Fontainebleau, Place du Général de Gaulle, 77300 Fontainebleau\n- **Date** : Samedi 23 mai 2026, 20h00\n- **Tarif** : Gratuit",
+      "answer": "Oui, il y a eu une visite nocturne gratuite des Grands Appartements du château de Fontainebleau en mai 2026 :\n\n**Titre** : Visite des Grands Appartements en nocturne\n**Lieu** : Château de Fontainebleau, Place du Général de Gaulle, 77300 Fontainebleau\n**Date** : Samedi 23 mai 2026, 20h00\n**Tarif** : Gratuit",
       "uids_attendus": [
         "29698481"
       ],
@@ -285,8 +285,8 @@
         "29698481"
       ],
       "timings": {
-        "retrieval_s": 0.459,
-        "generation_s": 0.81
+        "retrieval_s": 0.339,
+        "generation_s": 0.82
       },
       "erreur": null
     },
@@ -295,7 +295,7 @@
       "categorie": "evenement_nomme",
       "comportement_attendu": "repondre",
       "question": "Quand est joué Monte-Cristo au Théâtre Berthelot de Montreuil ?",
-      "answer": "Voici les dates de représentation de *Monte-Cristo* au Théâtre Berthelot de Montreuil :\n\n- **Mercredi 18 février 2026 à 20h30**\n- **Jeudi 19 février 2026 à 14h30 et 20h30**\n- **Vendredi 20 février 2026 à 14h30**",
+      "answer": "Voici les représentations de *Monte-Cristo* au Théâtre Berthelot de Montreuil :\n\n- **Mercredi 18 février 2026 à 20h30**\n- **Jeudi 19 février 2026 à 14h30 et 20h30**\n- **Vendredi 20 février 2026 à 14h30**",
       "uids_attendus": [
         "78351657",
         "84202139",
@@ -311,8 +311,8 @@
         "27567099"
       ],
       "timings": {
-        "retrieval_s": 2.358,
-        "generation_s": 0.83
+        "retrieval_s": 1.352,
+        "generation_s": 0.8
       },
       "erreur": null
     },
@@ -321,7 +321,7 @@
       "categorie": "recherche_thematique",
       "comportement_attendu": "repondre",
       "question": "Y a-t-il une brocante à Aubervilliers début juin 2026 ?",
-      "answer": "Oui, il y a une brocante à Aubervilliers début juin 2026 :\n\n**Brocante au jardin !**\n- **Lieu** : Cour Jardinée, 80 bis rue Henri Barbusse, 93300 Aubervilliers\n- **Date** : Samedi 6 juin 2026, 11h30 à 17h30\n- **Tarif** : Participation libre et gratuite",
+      "answer": "Oui, il y a une brocante à Aubervilliers début juin 2026 :\n\n**Brocante au jardin !**\n- **Lieu** : Cour Jardinée, 80 bis rue Henri Barbusse, 93300 Aubervilliers\n- **Date** : Samedi 6 juin 2026, de 11h30 à 17h30\n- **Tarif** : Participation libre et gratuite",
       "uids_attendus": [
         "17583117"
       ],
@@ -332,8 +332,8 @@
         "61270572"
       ],
       "timings": {
-        "retrieval_s": 0.387,
-        "generation_s": 0.81
+        "retrieval_s": 0.301,
+        "generation_s": 0.88
       },
       "erreur": null
     },
@@ -342,7 +342,7 @@
       "categorie": "contrainte_tarif",
       "comportement_attendu": "repondre",
       "question": "Quel est le tarif de la release party du Denis Uhalde Quartet « AURORE » ?",
-      "answer": "Le tarif de la release party du **Denis Uhalde Quartet ‘AURORE’** est de **10€ à 19€**.\n\n*Lieu : JASS CLUB, 141 Rue de Tolbiac, Paris*\n*Date : Jeudi 4 juin 2026 (19h30 ou 21h30)*",
+      "answer": "Le tarif de la release party du **Denis Uhalde Quartet ‘AURORE’** est de **10€ à 19€**.\n\n*(Événement prévu le **jeudi 4 juin 2026** au **JASS CLUB**, 141 Rue de Tolbiac, Paris.)*",
       "uids_attendus": [
         "32465869"
       ],
@@ -353,8 +353,8 @@
         "77599677"
       ],
       "timings": {
-        "retrieval_s": 0.1,
-        "generation_s": 0.7
+        "retrieval_s": 0.11,
+        "generation_s": 0.94
       },
       "erreur": null
     },
@@ -374,8 +374,8 @@
         "12783603"
       ],
       "timings": {
-        "retrieval_s": 0.487,
-        "generation_s": 1.07
+        "retrieval_s": 0.33,
+        "generation_s": 1.06
       },
       "erreur": null
     },
@@ -384,7 +384,7 @@
       "categorie": "recherche_thematique",
       "comportement_attendu": "repondre",
       "question": "Quel festival des arts de la rue se déroule à Nanterre en juin 2026 ?",
-      "answer": "Le festival des arts de la rue qui se déroule à Nanterre en juin 2026 est **Parade(s), Festival des arts de la rue de la Ville de Nanterre**.\n\n- **Lieu** : Parc des anciennes-mairies, Nanterre\n- **Dates** : 5, 6 et 7 juin 2026 (Événement 1) ou 12-14 juin 2026 (Événement 2)\n- **Tarif** : Gratuit",
+      "answer": "Le festival **Parade(s), Festival des arts de la rue de Nanterre** se déroule à Nanterre en juin 2026.\n\n- **Lieu** : Parc des anciennes-mairies, Nanterre\n- **Dates** : 5, 6 et 7 juin 2026 (ou 12-14 juin selon l'édition, les deux sont mentionnées)\n- **Tarif** : Gratuit",
       "uids_attendus": [
         "18788773"
       ],
@@ -395,8 +395,8 @@
         "92502487"
       ],
       "timings": {
-        "retrieval_s": 0.523,
-        "generation_s": 0.88
+        "retrieval_s": 0.312,
+        "generation_s": 0.81
       },
       "erreur": null
     },
@@ -417,8 +417,8 @@
         "48907038"
       ],
       "timings": {
-        "retrieval_s": 0.307,
-        "generation_s": 1.03
+        "retrieval_s": 0.222,
+        "generation_s": 0.81
       },
       "erreur": null
     },
@@ -427,7 +427,7 @@
       "categorie": "question_large",
       "comportement_attendu": "repondre",
       "question": "Que faire à Paris le 1er juillet 2026 ?",
-      "answer": "Voici une sélection d'événements à Paris le **1er juillet 2026** :\n\n- **DISCOBOLE : Mini Concert Conférencé : le Maloya**\n  *Médiathèque James Baldwin, 10 rue Henri Ribière (75020)*\n  **16h00** – **Gratuit**\n\n- **Al Sirah Al Hilaliyyah**\n  *Théâtre du Châtelet, 1 Place du Châtelet*\n  **20h00** – **De 5€ à 35€**\n\n- **Dave Bristow Quintet ‘Sides’** (2 créneaux)\n  *JASS CLUB, 141 Rue de Tolbiac*\n  **19h30 ou 21h30** – **De 10€ à 19€**\n\n- **Peindre à l'aquarelle au jardin d'Eugène Delacroix**\n  *Musée national Eugène-Delacroix, 6 rue de Furstemberg (75006)*\n  **En continu (1er juillet - 24 août)** – **De 9€ à 12€**",
+      "answer": "Voici une sélection d'événements à Paris le **1er juillet 2026** :\n\n- **DISCOBOLE : Mini Concert Conférencé : le Maloya**\n  *Médiathèque James Baldwin, 10 rue Henri Ribière, 75020 Paris*\n  **16h00** – Gratuit\n\n- **Al Sirah Al Hilaliyyah**\n  *Théâtre du Châtelet, 1 Place du Châtelet, Paris*\n  **20h00** – De 5€ à 35€\n\n- **Dave Bristow Quintet ‘Sides’**\n  *JASS CLUB, 141 Rue de Tolbiac, Paris*\n  **19h30 ou 21h30** – De 10€ à 19€",
       "uids_attendus": [
         "65255668",
         "32194038",
@@ -441,8 +441,8 @@
         "20568892"
       ],
       "timings": {
-        "retrieval_s": 0.303,
-        "generation_s": 1.62
+        "retrieval_s": 0.191,
+        "generation_s": 1.16
       },
       "erreur": null
     },
@@ -451,7 +451,7 @@
       "categorie": "hors_corpus_geo",
       "comportement_attendu": "aucun_resultat",
       "question": "Quels concerts sont prévus à Marseille en juillet 2026 ?",
-      "answer": "Aucun concert n'est prévu à Marseille en juillet 2026 parmi les événements disponibles.",
+      "answer": "Aucun concert prévu à Marseille en juillet 2026 parmi les événements disponibles.",
       "uids_attendus": [],
       "uids_obtenus": [
         "68521173",
@@ -460,8 +460,8 @@
         "65529369"
       ],
       "timings": {
-        "retrieval_s": 0.271,
-        "generation_s": 0.42
+        "retrieval_s": 0.189,
+        "generation_s": 0.53
       },
       "erreur": null
     },
@@ -470,12 +470,12 @@
       "categorie": "hors_corpus_periode",
       "comportement_attendu": "aucun_resultat",
       "question": "Quels événements sont prévus à Paris en décembre 2027 ?",
-      "answer": "Aucun événement prévu à Paris en décembre 2027 n'est disponible dans la liste fournie.",
+      "answer": "Aucun événement n'est prévu à Paris en décembre 2027 parmi ceux disponibles.",
       "uids_attendus": [],
       "uids_obtenus": [],
       "timings": {
-        "retrieval_s": 0.257,
-        "generation_s": 0.41
+        "retrieval_s": 0.242,
+        "generation_s": 0.4
       },
       "erreur": null
     },
@@ -484,7 +484,7 @@
       "categorie": "hors_domaine",
       "comportement_attendu": "aucun_resultat",
       "question": "Quel temps fera-t-il à Paris le 14 juillet ?",
-      "answer": "Aucun événement parmi ceux fournis ne mentionne une prévision météo pour le 14 juillet 2026 à Paris. Je ne peux donc pas répondre à votre question.",
+      "answer": "Aucun événement parmi ceux fournis ne mentionne la météo ou des prévisions pour le 14 juillet 2026 à Paris. Je ne peux donc pas répondre à votre question.",
       "uids_attendus": [],
       "uids_obtenus": [
         "87816259",
@@ -493,8 +493,8 @@
         "17413536"
       ],
       "timings": {
-        "retrieval_s": 2.614,
-        "generation_s": 0.61
+        "retrieval_s": 1.265,
+        "generation_s": 0.63
       },
       "erreur": null
     },
@@ -503,12 +503,12 @@
       "categorie": "criteres_impossibles",
       "comportement_attendu": "aucun_resultat",
       "question": "Y a-t-il un concert de metal gratuit à Versailles le 25 décembre 2025 ?",
-      "answer": "Aucun événement correspondant à votre demande n'est disponible dans la liste fournie.",
+      "answer": "Aucun événement correspondant à ta recherche n'est disponible dans la liste fournie.",
       "uids_attendus": [],
       "uids_obtenus": [],
       "timings": {
-        "retrieval_s": 0.283,
-        "generation_s": 0.43
+        "retrieval_s": 0.224,
+        "generation_s": 0.44
       },
       "erreur": null
     },
@@ -517,7 +517,7 @@
       "categorie": "recherche_thematique",
       "comportement_attendu": "repondre",
       "question": "Où voir un ciné-concert gratuit à Paris en juillet 2026 ?",
-      "answer": "Voici un événement qui correspond à ta recherche :\n\n**Ciné-concert Dracula, orchestre des Clefs de Seine**\n📍 La Roche (Plateau urbain), 15 avenue du Général Leclerc, 75014 Paris\n📅 Jeudi 9 juillet 2026 à 21h30\n💰 Gratuit",
+      "answer": "**Ciné-concert gratuit à Paris en juillet 2026 :**\n\n- **Titre :** Ciné-concert *Dracula*, orchestre des Clefs de Seine\n- **Lieu :** La Roche (Plateau urbain), 15 avenue du Général Leclerc, 75014 Paris\n- **Date :** Jeudi 9 juillet 2026, 21h30\n- **Tarif :** Gratuit",
       "uids_attendus": [
         "95057962"
       ],
@@ -528,8 +528,8 @@
         "36197385"
       ],
       "timings": {
-        "retrieval_s": 0.288,
-        "generation_s": 0.76
+        "retrieval_s": 0.197,
+        "generation_s": 0.75
       },
       "erreur": null
     },
@@ -538,7 +538,7 @@
       "categorie": "evenement_nomme",
       "comportement_attendu": "repondre",
       "question": "Peut-on visiter l'École militaire d'équitation de Fontainebleau ?",
-      "answer": "Oui, voici les options disponibles pour visiter l'École militaire d'équitation de Fontainebleau :\n\n- **Visite guidée de l’École militaire d’équitation**\n  *Lieu* : École militaire d'équitation, 1 Avenue de Maintenon, 77300 Fontainebleau\n  *Date* : 6 et 7 juin 2025\n  *Mode* : Sur place\n\n- **Démonstrations équestres et médiations dans le manège de Sénarmont**\n  *Lieu* : Manège de Sénarmont (entrée par le jardin Anglais du château de Fontainebleau), Place du Général de Gaulle, 77300 Fontainebleau\n  *Date* : 7 et 8 juin 2025\n  *Tarif* : Gratuit\n  *Mode* : Sur place",
+      "answer": "Oui, voici les événements proposés pour visiter l'École militaire d'équitation de Fontainebleau :\n\n- **Visite guidée de l’École militaire d’équitation**\n  *Lieu* : École militaire d'équitation, 1 Avenue de Maintenon, 77300 Fontainebleau\n  *Date* : 6 et 7 juin 2025\n  *Mode* : Sur place\n\n- **Démonstrations équestres et médiations dans le manège de Sénarmont**\n  *Lieu* : Manège de Sénarmont (entrée par le jardin Anglais du château de Fontainebleau), Place du Général de Gaulle, 77300 Fontainebleau\n  *Date* : 7 et 8 juin 2025\n  *Tarif* : Gratuit\n  *Mode* : Sur place",
       "uids_attendus": [
         "42635578"
       ],
@@ -549,8 +549,8 @@
         "12882963"
       ],
       "timings": {
-        "retrieval_s": 2.629,
-        "generation_s": 1.27
+        "retrieval_s": 1.351,
+        "generation_s": 4.39
       },
       "erreur": null
     },
@@ -573,8 +573,8 @@
         "36689031"
       ],
       "timings": {
-        "retrieval_s": 0.142,
-        "generation_s": 0.65
+        "retrieval_s": 0.107,
+        "generation_s": 0.59
       },
       "erreur": null
     },
@@ -583,7 +583,7 @@
       "categorie": "contrainte_tarif",
       "comportement_attendu": "repondre",
       "question": "Le festival ManiFeste-2026 est-il en accès libre ?",
-      "answer": "Non, le festival ManiFeste-2026 n'est pas en accès libre. Le tarif mentionné est \"Sur inscription\".",
+      "answer": "Non, le festival ManiFeste-2026 n'est pas en accès libre. Le tarif est sur inscription.",
       "uids_attendus": [
         "67125361"
       ],
@@ -594,8 +594,8 @@
         "65875442"
       ],
       "timings": {
-        "retrieval_s": 0.362,
-        "generation_s": 0.63
+        "retrieval_s": 0.229,
+        "generation_s": 0.46
       },
       "erreur": null
     }

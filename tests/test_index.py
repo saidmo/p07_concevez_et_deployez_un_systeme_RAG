@@ -43,9 +43,13 @@ def event_court():
 def event_long(event_court):
     event = dict(event_court)
     event["uid"] = "evt-2"
-    # full_text de ~1800 caractères → doit produire plusieurs chunks de 450
-    event["full_text"] = "Titre : Grand festival\n" + \
-        "Une phrase descriptive qui se répète pour simuler un long texte. " * 28
+    # full_text varié (~1800 caractères) → produit plusieurs chunks
+    # avec un chevauchement détectable (texte non répétitif).
+    event["full_text"] = "Titre : Grand festival\n" + " ".join(
+        f"Au programme de la soiree numero {i}, des concerts varies, "
+        f"des spectacles vivants et des animations pour le public."
+        for i in range(20)
+    )
     return event
 
 
@@ -87,13 +91,16 @@ class TestChunkDocuments:
     def test_overlap_entre_chunks_consecutifs(self, event_long):
         docs = [event_to_document(event_long)]
         chunks = chunk_documents(docs, chunk_size=450, chunk_overlap=80)
-        # La fin du chunk N doit partager du texte avec le début du chunk N+1
-        fin_premier  = chunks[0].page_content[-40:]
-        assert fin_premier in chunks[0].page_content
-        debut_second = chunks[1].page_content
-        # Au moins un fragment de 20 caractères en commun
-        assert any(fin_premier[i:i+20] in debut_second
-                   for i in range(len(fin_premier) - 20))
+        assert len(chunks) >= 3, "le texte long doit produire plusieurs chunks"
+        # On compare deux chunks de CORPS de texte (1 et 2) : le chunk 0 isole
+        # le titre (coupe sur le saut de ligne), il n'a pas d'overlap avec la suite.
+        fin = chunks[1].page_content[-80:]
+        debut_suivant = chunks[2].page_content[:160]
+        partage = any(
+            fin[i:i + 15] in debut_suivant
+            for i in range(len(fin) - 15)
+        )
+        assert partage, "les chunks consécutifs doivent se chevaucher"
 
     def test_melange_courts_et_longs(self, event_court, event_long):
         docs = [event_to_document(event_court), event_to_document(event_long)]

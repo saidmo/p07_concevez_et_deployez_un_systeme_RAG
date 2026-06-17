@@ -116,7 +116,7 @@ class TestAsk:
         response = client_degrade.post("/ask",
                                        json={"question": "un concert à Paris ?"})
         assert response.status_code == 503
-        assert "build_index" in response.json()["detail"]
+        assert "index introuvable" in response.json()["detail"]
 
     def test_erreur_interne_500(self, client_pret):
         client, mock_chain = client_pret

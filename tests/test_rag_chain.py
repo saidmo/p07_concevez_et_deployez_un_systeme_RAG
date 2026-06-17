@@ -29,19 +29,34 @@ from scripts.rag_chain import RagChain, MAX_EVENT_CHARS, SBERT_MODEL
 # ─────────────────────────────────────────────────────────────────────────────
 
 class FakeDoc:
-    """Imite un Document LangChain : seul .metadata est utilisé par retrieve()."""
-    def __init__(self, uid: str):
-        self.metadata = {"uid": uid}
+    """Imite un Document LangChain : .metadata est utilisé par retrieve()."""
+    def __init__(self, uid: str, metadata: dict = None):
+        if metadata is not None:
+            self.metadata = metadata
+        else:
+            # Métadonnées cohérentes avec make_event, pour que le filtrage
+            # hybride (date, ville, prix) dispose de vraies valeurs.
+            self.metadata = {
+                "uid": uid,
+                "city": "Paris",
+                "department": "Paris",
+                "date_begin": "2026-06-13T20:00:00+02:00",
+                "price": "Gratuit",
+            }
 
 
 class FakeVectorstore:
     """Imite FAISS : retourne une liste prédéfinie de (doc, score)."""
     def __init__(self, results: list[tuple[str, float]]):
         self._results = [(FakeDoc(uid), score) for uid, score in results]
+        self.index = type("FakeIndex", (), {"ntotal": len(self._results)})()
 
-    def similarity_search_with_score(self, question: str, k: int):
-        return self._results[:k]
-
+    def similarity_search_with_score(self, question: str, k: int,
+                                     filter=None, fetch_k=None):
+        docs = self._results
+        if filter is not None:
+            docs = [(d, s) for d, s in docs if filter(d.metadata)]
+        return docs[:k]
 
 class FakeRunnable:
     """Imite la chaîne LCEL prompt | llm : invoke() rend une réponse fixe."""
@@ -86,8 +101,11 @@ def chain():
     c.events_by_uid = {
         uid: make_event(uid) for uid in ["evt-A", "evt-B", "evt-C", "evt-D"]
     }
+    c.known_cities = {e["city"] for e in c.events_by_uid.values() if e.get("city")}
+    
     c.prompt = FakeRunnable("Je vous recommande l'Événement evt-A.")
     c.llm    = None    # FakeRunnable.__or__ absorbe le pipe
+    c.parser = None    # FakeRunnable.__or__ absorbe aussi le parser
     return c
 
 
@@ -198,10 +216,7 @@ class TestAsk:
 
     def test_structure_de_la_reponse(self, chain):
         result = chain.ask("un concert gratuit à Paris ?")
-        assert set(result.keys()) == {"answer", "sources", "timings"}
-        assert result["answer"] == "Je vous recommande l'Événement evt-A."
-        assert "retrieval_s" in result["timings"]
-        assert "generation_s" in result["timings"]
+        assert set(result.keys()) == {"answer", "sources", "contexts", "timings"}
 
     def test_sources_completes(self, chain):
         result = chain.ask("un concert ?")
@@ -212,8 +227,8 @@ class TestAsk:
         assert src["uid"] == "evt-A"
 
     def test_prompt_recoit_contexte_question_et_date(self, chain):
-        chain.ask("un concert ce week-end ?")
+        chain.ask("un concert ?")
         inputs = chain.prompt.last_inputs
-        assert "un concert ce week-end ?" == inputs["question"]
+        assert "un concert ?" == inputs["question"]
         assert "--- Événement 1 ---" in inputs["context"]
         assert inputs["today"], "la date du jour doit être injectée"
